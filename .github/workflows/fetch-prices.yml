@@ -1,0 +1,37 @@
+name: Update Stock Prices
+
+on:
+  schedule:
+    # Run every 5 minutes during market hours (9:30 AM - 4:00 PM ET, Mon-Fri)
+    - cron: '*/5 13-20 * * 1-5'  # UTC time
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  update-prices:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          pip install requests
+      
+      - name: Fetch stock prices
+        env:
+          FMP_API_KEY: ${{ secrets.FMP_API_KEY }}
+        run: |
+          python fetch_prices.py
+      
+      - name: Commit and push if changed
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git add prices.json
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Update stock prices" && git push)
