@@ -459,8 +459,8 @@
                     addDebugLog('Fetching prices from GitHub Pages...');
                     
                     // REPLACE THIS URL with your GitHub Pages URL after setup
-                    // Format: https://YOUR-USERNAME.github.io/portfolio-prices/prices.json
-                    const pricesUrl = 'https://YOUR-USERNAME.github.io/portfolio-prices/prices.json';
+                    // Format: https://oscarlust.github.io/portfolio-prices/prices.json
+                    const pricesUrl = 'https://oscarlust.github.io/portfolio-prices/prices.json';
                     
                     const response = await fetch(pricesUrl + '?t=' + Date.now()); // Cache bust
                     const data = await response.json();
